@@ -1,0 +1,92 @@
+package com.rough;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+
+public class Mini_Project {
+	public static void main(String[] args) throws IOException, InterruptedException {
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\S.R\\eclipse-workspace\\Selenium\\Driver\\chromedriver.exe");
+		ChromeOptions ch = new ChromeOptions();
+		ch.addArguments("incognito");
+		WebDriver driver = new ChromeDriver(ch);
+		driver.manage().window().maximize();
+		driver.get("http://automationpractice.com/index.php");
+		Actions ac = new Actions(driver);
+		WebElement signin = driver.findElement(By.xpath("//a[@class='login']"));
+		ac.moveToElement(signin).build().perform();
+		ac.click().build().perform();
+		Thread.sleep(2000);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement scroll_1 = driver.findElement(By.xpath("//h1[text()='Authentication']"));
+		js.executeScript("arguments[0].scrollIntoView();", scroll_1);
+		driver.findElement(By.id("email")).sendKeys("mani.c.s.valar@gmail.com");
+		driver.findElement(By.id("passwd")).sendKeys("123456qwerty");
+		driver.findElement(By.id("SubmitLogin")).click();
+		WebElement tshirt = driver.findElement(By.xpath("(//a[@title='T-shirts'])[2]"));
+		ac.moveToElement(tshirt).build().perform();
+		ac.click().build().perform();
+		WebElement centre_page = driver.findElement(By.xpath("//a[text()='Casual']"));
+		// JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].scrollIntoView();", centre_page);
+		Thread.sleep(2000);
+		// Actions ac = new Actions(driver);
+		WebElement qv = driver.findElement(By.xpath("//img[@title='Faded Short Sleeve T-shirts']"));
+		ac.moveToElement(qv).build().perform();
+		ac.click(qv).build().perform();
+		Thread.sleep(2000);
+		WebElement frame_1 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
+		driver.switchTo().frame(frame_1);
+		Thread.sleep(2000);
+		driver.findElement(By.name("qty")).clear();
+		driver.findElement(By.name("qty")).sendKeys("5");
+		WebElement size = driver.findElement(By.name("group_1"));
+		Select s = new Select(size);
+		s.selectByValue("3");
+		driver.findElement(By.xpath("//a[@title='Blue']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.name("Submit")).click();
+		Thread.sleep(3000);
+		driver.switchTo().defaultContent();
+		Thread.sleep(3000);
+		WebElement ptc = driver.findElement(By.xpath("//span[contains(text(),('Proceed'))]"));
+		ptc.click();
+		Thread.sleep(2000);
+		WebElement summary_page = driver.findElement(By.xpath("//td[text()='Total products']"));
+		js.executeScript("arguments[0].scrollIntoView();", summary_page);
+		driver.findElement(By.xpath("(//a[@title='Proceed to checkout'])[2]")).click();
+		Thread.sleep(2000);
+		WebElement address_page = driver.findElement(By.xpath("//label[contains(text(),'as the')]"));
+		js.executeScript("arguments[0].scrollIntoView();", address_page);
+		driver.findElement(By.name("processAddress")).click();
+		WebElement shipping_page = driver.findElement(By.xpath("//h1[text()='Shipping']"));
+		js.executeScript("arguments[0].scrollIntoView();", shipping_page);
+		driver.findElement(By.name("cgv")).click();
+		driver.findElement(By.name("processCarrier")).click();
+		WebElement payment_page = driver.findElement(By.xpath("//li[@class='step_current last']"));
+		js.executeScript("arguments[0].scrollIntoView();", payment_page);
+		driver.findElement(By.xpath("//a[@class='cheque']")).click();
+		WebElement check_payment = driver.findElement(By.xpath("//h1[text()='Order summary']"));
+		js.executeScript("arguments[0].scrollIntoView();", check_payment);
+		driver.findElement(By.xpath("(//button[@type='submit'])[2]")).click();
+		WebElement order_confirm = driver.findElement(By.xpath("//h1[text()='Order confirmation']"));
+		js.executeScript("arguments[0].scrollIntoView();", order_confirm);
+		TakesScreenshot ts = (TakesScreenshot) driver;
+		File source = ts.getScreenshotAs(OutputType.FILE);
+		File destination = new File("C:\\Users\\S.R\\eclipse-workspace\\Selenium\\Screenshot\\Mini-Project.png");
+		FileUtils.copyFile(source, destination);
+	}
+}
